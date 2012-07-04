@@ -59,7 +59,7 @@ return __VA_ARGS__;                                                             
     if (self) {
         // We don't retain here as we're letting RKRequestQueue manage
         // request ownership
-        _request = request;
+        _request = [request retain];
     }
 
     return self;
@@ -94,6 +94,7 @@ return __VA_ARGS__;                                                             
 - (void)dealloc
 {
     _request = nil;
+    [_request release];
     [_httpURLResponse release];
     _httpURLResponse = nil;
     [_body release];
