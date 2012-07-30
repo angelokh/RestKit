@@ -133,8 +133,15 @@ BOOL RKObjectIsValueEqualToValue(id sourceValue, id destinationValue) {
     [numberFormatter release];
 
     if (numeric) {
-        date = [NSDate dateWithTimeIntervalSince1970:[numeric doubleValue]];
-    } else if (![string isEqualToString:@""]) {
+        // if milliseconds, convert to seconds
+        NSTimeInterval epochSeconds;
+        if ([numeric doubleValue] > 1000000000000) {
+            epochSeconds = [numeric doubleValue]/1000;
+        } else {
+            epochSeconds = [numeric doubleValue];
+        }
+        date = [NSDate dateWithTimeIntervalSince1970:epochSeconds];
+    } else if(![string isEqualToString:@""]) {
         for (NSFormatter *dateFormatter in self.objectMapping.dateFormatters) {
             BOOL success;
         @synchronized(dateFormatter) {
