@@ -152,6 +152,11 @@ extern NSString * const RKManagedObjectStoreDidFailSaveNotification;
 ///-----------------------------------------------------------------------------
 
 /**
+ * Retrieves a model object from the primary context 
+ */
+- (NSManagedObject *)objectInPrimaryManagedObjectContext:(NSManagedObject *)object;
+
+/**
  Retrieves the Managed Object Context for the main thread that was initialized when
  the object store was created.
  */
