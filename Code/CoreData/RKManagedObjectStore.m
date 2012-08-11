@@ -442,26 +442,4 @@ static RKManagedObjectStore *defaultObjectStore = nil;
     return objectArray;
 }
 
-- (NSManagedObject *)objectInPrimaryManagedObjectContext:(NSManagedObject *)object
-{
-    NSAssert(object, @"Cannot fetch a managedObject from main context with nil object");
-    NSManagedObjectID *objectID = [object objectID];
-    if ([objectID isTemporaryID]) {
-        RKLogDebug(@"Object (%@) has temporaryID. Attempting to generate permanentID.",[[self class] description]);
-        NSError *error = nil;
-        if ([[self primaryManagedObjectContext] obtainPermanentIDsForObjects:[NSArray arrayWithObject:object] error:&error]) {
-            objectID = [object objectID];
-            RKLogDebug(@"Object (%@) was granted a permanentID.",[[self class] description]);
-        } else {
-            RKLogError(@"Encountered an error during seek object permanent id: %@", [error localizedDescription]);
-        }
-    }
-    NSError *error = nil;
-    NSManagedObject *inContext = [[self primaryManagedObjectContext] existingObjectWithID:objectID error:&error];
-    if (error) {
-        RKLogError(@"Encountered an error during fetch object from primary context: %@", [error localizedDescription]);
-        return nil;
-    }
-    return inContext;
-}
 @end
